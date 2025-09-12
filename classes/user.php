@@ -102,6 +102,46 @@ class Users{
         }
     }
 
+    public function getUserByID($id){
+
+        $getByID_query = "SELECT * FROM users WHERE id = ?";
+        $stat = $this->conn->prepare($getByID_query);
+        $stat->bind_param("i" , $id);
+        $stat->execute();
+
+        return $res = $stat->get_result();
+    }
+
+    public function viewAllUsers(){
+
+        $viewAll_query = "SELECT * FROM users";
+        $res = $this->conn->query($viewAll_query);
+
+        return $res;
+    }
+
+    public function updateUser($username , $useremail , $userpass , $id){
+
+        if (empty($userpass)) {
+            $pass = $this->getUserByID($id);
+            $old_pass = $pass->fetch_assoc();
+            $hash = $old_pass['userpass'];
+        }
+        else{
+            $hash = password_hash($userpass , PASSWORD_BCRYPT);
+        }
+
+        $updateUser_query = "UPDATE users SET username = ? , useremail = ? , userpass = ?
+        WHERE id =?";
+        $stat = $this->conn->prepare($updateUser_query);
+        $stat->bind_param("sssi" , $username , $useremail , $hash , $id);
+        
+        return $stat->execute();
+
+    }
+
+
+
 
 
 }
