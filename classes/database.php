@@ -33,6 +33,7 @@ class Database{
         }
         else{
             $this->usersTable();
+             $this->postTable();
         }
         } catch (Exception $e) {
             echo "DATABASE ERROR" . $e->get_Message();
@@ -57,6 +58,32 @@ class Database{
 
         if ($res == FALSE) {
             echo "ERROR";
+        }
+        
+
+    }
+
+    public function postTable(){
+
+        $usedb = "USE blog_project";
+        $this->conn->query($usedb);
+
+        $postTable = "CREATE TABLE IF NOT EXISTS posts(
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        content text NOT NULL,
+        featured_img VARCHAR(255) NOT NULL,
+        status ENUM('pending' , 'approved' , 'rejected') default 'pending',
+        created_at TIMESTAMP default CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) references users(id) ON DELETE CASCADE
+        )
+        ";
+
+        $res = $this->conn->query($postTable);
+
+        if ($res == FALSE) {
+           echo "POST TABLE NOT CREATED";
         }
 
     }
