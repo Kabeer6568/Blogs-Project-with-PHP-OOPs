@@ -41,8 +41,10 @@ class Post extends Database{
 
     public function viewAllPost(){
 
-        $viewAllPost = "SELECT * FROM posts";
-        $res = $this->conn->query($viewAllPost);
+        $viewAllPost_query = "SELECT posts.*, users.username 
+        FROM posts
+        INNER JOIN users ON posts.user_id = users.id";
+        $res = $this->conn->query($viewAllPost_query);
         return $res;
     }
 
@@ -53,6 +55,22 @@ class Post extends Database{
         $stat->bind_param("si" , $status , $post_id);
         $res = $stat->execute();
         
+
+        return $res;
+
+    }
+
+    public function showAllPosts(){
+
+        $showAllPosts_query = "SELECT posts.*, users.username 
+              FROM posts 
+              JOIN users ON posts.user_id = users.id 
+              WHERE posts.status = ?";
+        $stat = $this->conn->prepare($showAllPosts_query);
+        $status = 'approved';
+        $stat->bind_param("s" , $status);
+        $stat->execute();
+        $res = $stat->get_result();
 
         return $res;
 

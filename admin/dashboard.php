@@ -83,6 +83,7 @@ if ($res->num_rows > 0) {
             FEATURED IMAGE
         </th>
         <th>STATUS</th>
+        <th>POSTED BY</th>
         <th>UPDATE POST</th>
         <th>DELETE POST</th>
     </tr>
@@ -112,6 +113,9 @@ if ($res->num_rows > 0) {
                 <option value="rejected" <?php if($data['status'] == 'rejected'){echo 'selected';} ?>>Rejected</option>
             </select>
         </form>
+        </th>
+        <th>
+            <?php echo htmlspecialchars($data['username']); ?>
         </th>
         <th>
             <button >
