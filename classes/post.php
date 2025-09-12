@@ -46,4 +46,15 @@ class Post extends Database{
         return $res;
     }
 
+    public function postStatus($post_id , $status){
+
+        $postStatus = "UPDATE posts SET status = ? WHERE id = ?";
+        $stat = $this->conn->prepare($postStatus);
+        $stat->bind_param("si" , $status , $post_id);
+        $res = $stat->execute();
+        
+
+        return $res;
+
+    }
 }

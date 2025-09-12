@@ -58,6 +58,14 @@ $data = $users->viewAllUsers();
 
 <?php 
 
+
+if (isset($_POST['post_id'] , $_POST['status'])) {
+    $post->postStatus($_POST['post_id'] , $_POST['status']);
+}
+else{
+    echo "error";
+}
+
 $res = $post->viewAllPost();
 
 
@@ -94,9 +102,16 @@ if ($res->num_rows > 0) {
             <img src="../<?php echo htmlspecialchars($data['featured_img']) ?>" style="width: 100px">
         </th>
         <th>
-            <button>
-            <?php echo htmlspecialchars($data['status']) ?>
-        </button>
+        <form action="" method="post">
+
+            <input type="hidden" name="post_id" value="<?php echo $data['id']; ?>">
+
+            <select name="status" onchange="this.form.submit()">
+                <option value="pending" <?php if($data['status'] == 'pending'){echo 'selected';} ?>>Pending</option>
+                <option value="approved" <?php if($data['status'] == 'approved'){echo 'selected';} ?>>Approved</option>
+                <option value="rejected" <?php if($data['status'] == 'rejected'){echo 'selected';} ?>>Rejected</option>
+            </select>
+        </form>
         </th>
         <th>
             <button >
