@@ -91,8 +91,13 @@ class Users{
     }
 
     public function checkLogin(){
-        if (!empty($_SESSION['userid']) && $_SESSION['is_admin'] == FALSE) {
+        if (!empty($_SESSION['userid'])) {
+            if ($_SESSION['is_admin'] == TRUE) {
+                header("location: http://localhost/blog_project/admin/dashboard.php");
+            }
+            else{
             header("location: profile.php");
+            }
         }
         
     }
